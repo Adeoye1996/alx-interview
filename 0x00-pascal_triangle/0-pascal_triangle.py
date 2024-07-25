@@ -6,8 +6,7 @@ Module for generating Pascal's triangle
 
 def pascal_triangle(n):
     """
-    Returns a list of lists of integers representing
-    Pascal's triangle
+    Returns a list of lists of integers representing Pascal's triangle
     """
     if n <= 0:
         return []
@@ -24,4 +23,4 @@ def pascal_triangle(n):
         # Append the new row to the triangle
         triangle.append(new_row)
     
-    return (triangle)
+    return triangle
