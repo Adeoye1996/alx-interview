@@ -1,37 +1,34 @@
-#!/usr/bin/env node
+#!/usr/bin/node
 const request = require('request');
 
 const filmId = process.argv[2];
-const url = `https://swapi-api.hbtn.io/api/films/${filmId}/`;
 
-function printMovieCharacters(url) {
-  request(url, async (error, response, body) => {
-    if (error) {
-      console.log('An error occurred');
-      return;
-    }
+const url = 'https://swapi-api.hbtn.io/api/films/' + filmId + '/';
+
+function printMovieCharacters (url) {
+  request(url, async function (error, response, body) {
+    if (error) return console.log('An error occurred');
 
     const characters = JSON.parse(body).characters;
     if (!characters) return;
 
-    const promises = characters.map((characterUrl) => {
-      return new Promise((resolve, reject) => {
-        request(characterUrl, (error, response, body) => {
-          if (error) {
-            console.log('Error fetching character');
-            reject(error);
-          } else {
-            resolve(JSON.parse(body).name);
-          }
+    const promises = [];
+
+    for (const ch of characters) {
+      let promise = null;
+
+      promise = new Promise(function (resolve, reject) {
+        request(ch, function (error, response, body) {
+          if (error) return console.log('Error fetching character');
+          resolve(JSON.parse(body).name);
         });
       });
-    });
+      promises.push(promise);
+    }
 
-    try {
-      const characterNames = await Promise.all(promises);
-      characterNames.forEach((name) => console.log(name));
-    } catch (error) {
-      console.log('Error handling promises');
+    const data = await Promise.all(promises);
+    for (const item of data) {
+      console.log(item);
     }
   });
 }
