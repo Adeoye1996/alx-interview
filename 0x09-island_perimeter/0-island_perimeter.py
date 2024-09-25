@@ -1,7 +1,6 @@
-
 #!/usr/bin/python3
 """
-Module 0x09. 0-island_perimeter
+Module for 0x09. 0-island_perimeter
 """
 
 
